@@ -1,0 +1,40 @@
+name: Download nightly
+on:
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest  
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        submodules: true
+
+    - name: Collect
+      run: |
+        sudo apt-get install -y wget
+        if [ ${{ secrets.INIT_TOKEN }} = 'yes' ]; then
+          bash collect.sh
+        else
+          bash update.sh
+        fi
+
+    - name: Update initialize flag
+      uses: msanjose/github-secret-updater@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        owner: ${{ github.repository_owner }}
+        repo: ${{ github.repository_name }}
+        secret-id: 'INIT_TOKEN'
+        secret-value: 'no'
+
+    - name: Commit
+      uses: EndBug/add-and-commit@v9 # You can change this to use a specific version.
+      with:
+        # The arguments for the `git add` command (see the paragraph below for more info)
+        # Default: '.'
+        add: 'link'
