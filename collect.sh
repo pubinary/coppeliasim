@@ -22,11 +22,13 @@ for tag in $tags; do
             ubuntu_year=$((year-i-1))
         fi
 
+        touch ./link/${tag}.txt
+
         #echo $ubuntu_year
         url="https://downloads.coppeliarobotics.com/${version}/CoppeliaSim_Edu_${version}_Ubuntu${ubuntu_year}_04.tar.xz"
         wget --spider ${url}
         if [ $? -eq 0 ]; then
-            echo "${version} ${url}" >> ./link/link.txt
+            echo "${version} ${url}" >> ./link/${tag}.txt
         fi
     done
 done
