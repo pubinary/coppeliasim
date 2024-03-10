@@ -34,6 +34,8 @@ for tag in $tags; do
 
         if [ -s ./link/${tag}.txt ]; then
             # The file is not-empty.
+            touch new_tag.tag
+            echo "${tag}" > new_tag.tag
             break
         else
             # The file is empty.

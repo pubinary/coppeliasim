@@ -35,9 +35,19 @@ jobs:
 #        secret-id: 'INIT_TOKEN'
 #        secret-value: 'no'
 
+    - name: Read file contents
+      id: read_file
+      uses: andstor/file-reader-action@v1
+      with:
+        path: "new_tag.tag"
+
+    - name: File contents
+      run: echo "${ steps.read_file.outputs.contents }"
+
     - name: Commit
       uses: EndBug/add-and-commit@v9 # You can change this to use a specific version.
       with:
         # The arguments for the `git add` command (see the paragraph below for more info)
         # Default: '.'
         add: 'link'
+        tag: 'v1.0.0 --force'
