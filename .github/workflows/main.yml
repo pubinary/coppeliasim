@@ -25,15 +25,15 @@ jobs:
           bash update.sh
         fi
 
-    - name: Update initialize flag
-      uses: msanjose/github-secret-updater@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        owner: ${{ github.repository_owner }}
-        repo: ${{ github.repository_name }}
-        secret-id: 'INIT_TOKEN'
-        secret-value: 'no'
+#    - name: Update initialize flag
+#      uses: msanjose/github-secret-updater@v1
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      with:
+#        owner: ${{ github.repository_owner }}
+#        repo: ${{ github.repository_name }}
+#        secret-id: 'INIT_TOKEN'
+#        secret-value: 'no'
 
     - name: Commit
       uses: EndBug/add-and-commit@v9 # You can change this to use a specific version.
