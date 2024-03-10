@@ -9,6 +9,8 @@ git ls-remote --tags --sort=committerdate | grep -o 'v.*' > ../tag.txt
 popd
 
 tags=$(cat tag.txt)
+mkdir -p link
+mkdir -p release
 for tag in $tags; do
     if [ ! -f ./link/${tag}.txt ]; then
         touch ./link/${tag}.txt
@@ -29,13 +31,14 @@ for tag in $tags; do
             wget --spider ${url}
             if [ $? -eq 0 ]; then
                 echo "${version} ${url}" >> ./link/${tag}.txt
+                wget -P release ${url} 
             fi
         done
 
         if [ -s ./link/${tag}.txt ]; then
             # The file is not-empty.
-            touch new_tag.tag
-            echo "${tag}" > new_tag.tag
+            touch release_tag.txt
+            echo "${tag}" > release_tag.txt
             break
         else
             # The file is empty.

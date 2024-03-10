@@ -39,10 +39,10 @@ jobs:
       id: read_file
       uses: andstor/file-reader-action@v1
       with:
-        path: "new_tag.tag"
+        path: "release_tag.txt"
 
     - name: File contents
-      run: echo "${{ steps.read_file.outputs.contents }}"
+      run: echo "Creating release ${{ steps.read_file.outputs.contents }}"
 
     - name: Commit
       uses: EndBug/add-and-commit@v9 # You can change this to use a specific version.
@@ -50,4 +50,15 @@ jobs:
         # The arguments for the `git add` command (see the paragraph below for more info)
         # Default: '.'
         add: 'link'
-        tag: 'v1.0.0 --force'
+        tag: ${{ steps.read_file.outputs.contents }}
+
+    - name: Publish archives and packages
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ steps.read_file.outputs.contents }}
+      #  body: "This is a test"
+      #  draft: true
+      #  prerelease: true
+        files: release/*
+      #env:
+      #  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
