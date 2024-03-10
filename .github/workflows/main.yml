@@ -19,6 +19,7 @@ jobs:
       run: |
         sudo apt-get install -y wget
         if [ ${{ secrets.INIT_TOKEN }} = 'yes' ]; then
+          mkdir -p link
           bash collect.sh
         else
           bash update.sh
