@@ -9,8 +9,7 @@ git ls-remote --tags --sort=committerdate | grep -o 'v.*' > ../tag.txt
 popd
 
 tags=$(cat tag.txt)
-mkdir -p link
-mkdir -p release
+
 for tag in $tags; do
     if [ ! -f ./link/${tag}.txt ]; then
         touch ./link/${tag}.txt

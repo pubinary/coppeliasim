@@ -20,6 +20,7 @@ jobs:
         sudo apt-get install -y wget
         if [ ${{ secrets.INIT_TOKEN }} = 'yes' ]; then
           mkdir -p link
+          mkdir -p release
           bash collect.sh
         else
           bash update.sh
@@ -34,6 +35,15 @@ jobs:
 #        repo: ${{ github.repository_name }}
 #        secret-id: 'INIT_TOKEN'
 #        secret-value: 'no'
+
+    - name: Early exit
+      run: |
+        if [ ! -f release_tag.txt ]; then
+          gh run cancel ${{ github.run_id }}
+          gh run watch ${{ github.run_id }}
+        fi
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Read file contents
       id: read_file
