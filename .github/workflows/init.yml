@@ -38,7 +38,7 @@ jobs:
       run: echo "Creating release ${{ steps.read_tag.outputs.contents }}"
 
     - name: Check tag
-      uses: mukunku/tag-exists-action@v1.4.0
+      uses: mukunku/tag-exists-action@v1.6.0
       id: checkTag
       with: 
         tag: ${{ steps.read_tag.outputs.contents }}
