@@ -67,7 +67,7 @@ jobs:
     - name: Echo link file
       run: |
         if [ ${{ steps.read_link_file.outputs.contents }} = "Lost" ]; then
-          echo "No package available for ${{ steps.read_tag_name.outputs.contents }"
+          echo "No package available for ${{ steps.read_tag_name.outputs.contents }}"
         fi
     
     - name: Publish archives and packages
