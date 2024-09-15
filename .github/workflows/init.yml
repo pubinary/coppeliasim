@@ -37,13 +37,28 @@ jobs:
     - name: Show tag
       run: echo "Creating release ${{ steps.read_tag.outputs.contents }}"
 
-    - name: Commit
+    - name: Check tag
+      uses: mukunku/tag-exists-action@v1.4.0
+      id: checkTag
+      with: 
+        tag: ${{ steps.read_tag.outputs.contents }}
+
+    - name: Commit and tag
+      if: steps.checkTag.outputs.exists == 'false' 
       uses: EndBug/add-and-commit@v9 # You can change this to use a specific version.
       with:
         # The arguments for the `git add` command (see the paragraph below for more info)
         # Default: '.'
         add: 'link'
         tag: ${{ steps.read_tag.outputs.contents }}
+
+    - name: Commit but don't tag
+      if: steps.checkTag.outputs.exists == 'true' 
+      uses: EndBug/add-and-commit@v9 # You can change this to use a specific version.
+      with:
+        # The arguments for the `git add` command (see the paragraph below for more info)
+        # Default: '.'
+        add: 'link'
 
     - name: Read link file
       id: read_link_file
@@ -60,7 +75,7 @@ jobs:
     - name: Publish archives and packages
       uses: softprops/action-gh-release@v1
       with:
-        tag_name: ${{ steps.read_file.outputs.contents }}
+        tag_name: ${{ steps.read_tag.outputs.contents }}
       #  body: "This is a test"
       #  draft: true
       #  prerelease: true
