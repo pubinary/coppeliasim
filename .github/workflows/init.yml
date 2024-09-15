@@ -1,0 +1,69 @@
+name: Download nightly
+on:
+  workflow_dispatch:
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest  
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        submodules: true
+
+    - name: Collect
+      run: |
+        sudo apt-get install -y wget
+        mkdir -p link
+        mkdir -p release
+        bash collect.sh
+
+#    - name: Early exit
+#      run: |
+#        if [ ! -f release_tag.txt ]; then
+#          gh run cancel ${{ github.run_id }}
+#          gh run watch ${{ github.run_id }}
+#        fi
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Read tag
+      id: read_tag
+      uses: andstor/file-reader-action@v1
+      with:
+        path: "release_tag.txt"
+
+    - name: Show tag
+      run: echo "Creating release ${{ steps.read_tag.outputs.contents }}"
+
+    - name: Commit
+      uses: EndBug/add-and-commit@v9 # You can change this to use a specific version.
+      with:
+        # The arguments for the `git add` command (see the paragraph below for more info)
+        # Default: '.'
+        add: 'link'
+        tag: ${{ steps.read_tag.outputs.contents }}
+
+    - name: Read link file
+      id: read_link_file
+      uses: andstor/file-reader-action@v1
+      with:
+        path: "release_link.txt"
+
+    - name: Echo link file
+      run: |
+        if [ ${{ steps.read_link_file.outputs.contents }} = "Lost" ]; then
+          echo "No package available for ${{ steps.read_tag.outputs.contents }}"
+        fi
+
+    - name: Publish archives and packages
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ steps.read_file.outputs.contents }}
+      #  body: "This is a test"
+      #  draft: true
+      #  prerelease: true
+        files: release/*
+      #env:
+      #  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
