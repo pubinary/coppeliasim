@@ -34,14 +34,16 @@ for tag in $tags; do
             fi
         done
 
+        touch release_tag.txt
+        echo "${tag}" > release_tag.txt
+
         if [ -s ./link/${tag}.txt ]; then
-            # The file is not-empty.
-            touch release_tag.txt
-            echo "${tag}" > release_tag.txt
+            # The file is not empty.
             break
         else
             # The file is empty.
-            rm -f ./link/${tag}.txt
+            echo "Lost" > ./link/${tag}.txt
+            break
         fi
     fi
 done

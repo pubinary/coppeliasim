@@ -18,13 +18,9 @@ jobs:
     - name: Collect
       run: |
         sudo apt-get install -y wget
-        if [ ${{ secrets.INIT_TOKEN }} = 'yes' ]; then
-          mkdir -p link
-          mkdir -p release
-          bash collect.sh
-        else
-          bash update.sh
-        fi
+        mkdir -p link
+        mkdir -p release
+        bash collect.sh
 
 #    - name: Update initialize flag
 #      uses: msanjose/github-secret-updater@v1
@@ -36,23 +32,23 @@ jobs:
 #        secret-id: 'INIT_TOKEN'
 #        secret-value: 'no'
 
-    - name: Early exit
-      run: |
-        if [ ! -f release_tag.txt ]; then
-          gh run cancel ${{ github.run_id }}
-          gh run watch ${{ github.run_id }}
-        fi
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#    - name: Early exit
+#      run: |
+#        if [ ! -f release_tag.txt ]; then
+#          gh run cancel ${{ github.run_id }}
+#          gh run watch ${{ github.run_id }}
+#        fi
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Read file contents
-      id: read_file
+    - name: Read tag name
+      id: read_tag_name
       uses: andstor/file-reader-action@v1
       with:
         path: "release_tag.txt"
 
-    - name: File contents
-      run: echo "Creating release ${{ steps.read_file.outputs.contents }}"
+    - name: Echo tag name
+      run: echo "Creating release ${{ steps.read_tag_name.outputs.contents }}"
 
     - name: Commit
       uses: EndBug/add-and-commit@v9 # You can change this to use a specific version.
@@ -60,12 +56,24 @@ jobs:
         # The arguments for the `git add` command (see the paragraph below for more info)
         # Default: '.'
         add: 'link'
-        tag: ${{ steps.read_file.outputs.contents }}
+        tag: ${{ steps.read_tag_name.outputs.contents }}
 
+    - name: Read link file
+      id: read_link_file
+      uses: andstor/file-reader-action@v1
+      with:
+        path: "link/${{ steps.read_tag_name.outputs.contents }}.txt"
+
+    - name: Echo link file
+      run: |
+        if [ ${{ steps.read_link_file.outputs.contents }} = "Lost" ]; then
+          echo "No package available for ${{ steps.read_tag_name.outputs.contents }"
+        fi
+    
     - name: Publish archives and packages
       uses: softprops/action-gh-release@v1
       with:
-        tag_name: ${{ steps.read_file.outputs.contents }}
+        tag_name: ${{ steps.read_tag_name.outputs.contents }}
       #  body: "This is a test"
       #  draft: true
       #  prerelease: true
