@@ -29,7 +29,7 @@ for tag in $tags; do
         last_bracket=${timestamp_line:(-1)}
 
         timestamp="[$(date --utc +%FT%T.%3NZ)]"
-        if [ "${first_bracket}" = "[" ] && [ "${last_bracket}" = "]" ]; then
+        if [ "${first_bracket}" == "[" ] && [ "${last_bracket}" == "]" ]; then
             sed -i "1s/.*/$timestamp/" ./link/${tag}.txt
         else
             sed -i "1s/^/$timestamp\n/" ./link/${tag}.txt
