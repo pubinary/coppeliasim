@@ -1,4 +1,4 @@
-name: Download nightly
+name: Download historical versions
 on:
   workflow_dispatch:
 
