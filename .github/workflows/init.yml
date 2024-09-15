@@ -43,19 +43,11 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         tag: ${{ steps.read_tag.outputs.contents }}
 
+    - name: Show existing tag
     - run: echo ${{ steps.git_tag_check.outputs.tag }}
 
-    - uses: uruz-7/tag-exists-action@v2
-      id: checkTag2
-      with:
-        tag: ${{ steps.read_tag.outputs.contents }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - run: echo ${{ steps.checkTag2.outputs.exists }}
-
     - name: Commit and tag
-      if: steps.checkTag.outputs.exists == 'false' 
+      if: steps.git_tag_check.outputs.tag == '' 
       uses: EndBug/add-and-commit@v9 # You can change this to use a specific version.
       with:
         # The arguments for the `git add` command (see the paragraph below for more info)
@@ -64,7 +56,7 @@ jobs:
         tag: ${{ steps.read_tag.outputs.contents }}
 
     - name: Commit but don't tag
-      if: steps.checkTag.outputs.exists == 'true' 
+      if: steps.git_tag_check.outputs.tag != '' 
       uses: EndBug/add-and-commit@v9 # You can change this to use a specific version.
       with:
         # The arguments for the `git add` command (see the paragraph below for more info)
