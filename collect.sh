@@ -25,9 +25,9 @@ for tag in $tags; do
         done
 
         timestamp_line=$(head -n 1 ./link/${tag}.txt)
-        echo "Last timestamp " + $timestamp_line
+        echo "Last timestamp " + "$timestamp_line"
 
-        first_bracket=${timestamp_line:(1)}
+        first_bracket="${timestamp_line:(1)}"
         echo $first_bracket
         last_bracket=${timestamp_line:(-1)}
 
