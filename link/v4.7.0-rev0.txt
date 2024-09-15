@@ -1,0 +1,3 @@
+V4_7_0_rev0 https://downloads.coppeliarobotics.com/V4_7_0_rev0/CoppeliaSim_Edu_V4_7_0_rev0_Ubuntu24_04.tar.xz
+V4_7_0_rev0 https://downloads.coppeliarobotics.com/V4_7_0_rev0/CoppeliaSim_Edu_V4_7_0_rev0_Ubuntu22_04.tar.xz
+V4_7_0_rev0 https://downloads.coppeliarobotics.com/V4_7_0_rev0/CoppeliaSim_Edu_V4_7_0_rev0_Ubuntu20_04.tar.xz
