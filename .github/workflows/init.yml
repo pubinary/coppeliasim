@@ -53,7 +53,7 @@ jobs:
 
     - name: Echo link file
       run: |
-        if [ ${{ steps.read_link_file.outputs.contents }} = "Lost" ]; then
+        if [ ${{ steps.read_link_file.outputs.contents }} == "Lost" ]; then
           echo "No package available for ${{ steps.read_tag.outputs.contents }}"
         fi
 
