@@ -44,7 +44,7 @@ jobs:
         tag: ${{ steps.read_tag.outputs.contents }}
 
     - name: Show existing tag
-    - run: echo ${{ steps.git_tag_check.outputs.tag }}
+      run: echo ${{ steps.git_tag_check.outputs.tag }}
 
     - name: Commit and tag
       if: steps.git_tag_check.outputs.tag == '' 
