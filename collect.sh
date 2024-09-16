@@ -14,28 +14,32 @@ for tag in $tags; do
     old_link=()
 
     if [ -f ./link/${tag}.txt ]; then
-        old_link_nossl=($(grep -oP "http://\K[^']+" ./link/${tag}.txt))
-        for link in "${old_link_nossl[@]}"; do
-            old_link+=("http://" + link)
-        done
-
-        old_link_ssl=($(grep -oP "https://\K[^']+" ./link/${tag}.txt))
-        for link in "${old_link_ssl[@]}"; do
-            old_link+=("https://" + link)
-        done
-
         timestamp_line=$(head -n 1 ./link/${tag}.txt)
         echo "Last timestamp $timestamp_line"
 
         first_bracket="${timestamp_line:0:1}"
-        echo $first_bracket
         last_bracket="${timestamp_line:(-1)}"
-
-        timestamp="[$(date --utc +%FT%T.%3NZ)]"
+        
         if [ "${first_bracket}" == "[" ] && [ "${last_bracket}" == "]" ]; then
-            sed -i "1s/.*/$timestamp/" ./link/${tag}.txt
+            echo "Skipping ${tag}"
+            continue
         else
-            sed -i "1s/^/$timestamp\n/" ./link/${tag}.txt
+            old_link_nossl=($(grep -oP "http://\K[^']+" ./link/${tag}.txt))
+            for link in "${old_link_nossl[@]}"; do
+                old_link+=("http://" + link)
+            done
+
+            old_link_ssl=($(grep -oP "https://\K[^']+" ./link/${tag}.txt))
+            for link in "${old_link_ssl[@]}"; do
+                old_link+=("https://" + link)
+            done            
+
+            timestamp="[$(date --utc +%FT%T.%3NZ)]"
+            #if [ "${first_bracket}" == "[" ] && [ "${last_bracket}" == "]" ]; then
+            #    sed -i "1s/.*/$timestamp/" ./link/${tag}.txt
+            #else
+                sed -i "1s/^/$timestamp\n/" ./link/${tag}.txt
+            #fi
         fi
     else
         touch ./link/${tag}.txt
