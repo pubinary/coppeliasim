@@ -1,8 +1,7 @@
-name: Collect old versions
+name: Download nightly
 on:
-  workflow_dispatch:
   schedule:
-    - cron: "*/10 * * * *"
+    - cron: "0 0 * * *"
 
 jobs:
   collect:
@@ -21,6 +20,16 @@ jobs:
         mkdir -p release
         bash collect.sh
 
+#    - name: Update initialize flag
+#      uses: msanjose/github-secret-updater@v1
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      with:
+#        owner: ${{ github.repository_owner }}
+#        repo: ${{ github.repository_name }}
+#        secret-id: 'INIT_TOKEN'
+#        secret-value: 'no'
+
 #    - name: Early exit
 #      run: |
 #        if [ ! -f release_tag.txt ]; then
@@ -30,57 +39,39 @@ jobs:
 #      env:
 #        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Read tag
-      id: read_tag
+    - name: Read tag name
+      id: read_tag_name
       uses: andstor/file-reader-action@v1
       with:
         path: "release_tag.txt"
 
-    - name: Show tag
-      run: echo "Creating release ${{ steps.read_tag.outputs.contents }}"
+    - name: Echo tag name
+      run: echo "Creating release ${{ steps.read_tag_name.outputs.contents }}"
 
-    - uses: bbonkr/git-tag-check-action@v1
-      id: git_tag_check
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        tag: ${{ steps.read_tag.outputs.contents }}
-
-    - name: Show existing tag
-      run: echo ${{ steps.git_tag_check.outputs.tag }}
-
-    - name: Commit and tag
-      if: steps.git_tag_check.outputs.tag == '' 
+    - name: Commit
       uses: EndBug/add-and-commit@v9 # You can change this to use a specific version.
       with:
         # The arguments for the `git add` command (see the paragraph below for more info)
         # Default: '.'
         add: 'link'
-        tag: ${{ steps.read_tag.outputs.contents }}
-
-    - name: Commit but don't tag
-      if: steps.git_tag_check.outputs.tag != '' 
-      uses: EndBug/add-and-commit@v9 # You can change this to use a specific version.
-      with:
-        # The arguments for the `git add` command (see the paragraph below for more info)
-        # Default: '.'
-        add: 'link'
+        tag: ${{ steps.read_tag_name.outputs.contents }}
 
     - name: Read link file
       id: read_link_file
       uses: andstor/file-reader-action@v1
       with:
-        path: "release_link.txt"
+        path: "link/${{ steps.read_tag_name.outputs.contents }}.txt"
 
     - name: Echo link file
       run: |
-        if [ ${{ steps.read_link_file.outputs.contents }} == "Lost" ]; then
-          echo "No package available for ${{ steps.read_tag.outputs.contents }}"
+        if [ ${{ steps.read_link_file.outputs.contents }} = "Lost" ]; then
+          echo "No package available for ${{ steps.read_tag_name.outputs.contents }}"
         fi
-
+    
     - name: Publish archives and packages
       uses: softprops/action-gh-release@v1
       with:
-        tag_name: ${{ steps.read_tag.outputs.contents }}
+        tag_name: ${{ steps.read_tag_name.outputs.contents }}
       #  body: "This is a test"
       #  draft: true
       #  prerelease: true

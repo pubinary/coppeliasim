@@ -80,6 +80,33 @@ for tag in $tags; do
             fi
         fi
     done
+    
+    #url_mac_amd="https://downloads.coppeliarobotics.com/${version}/CoppeliaSim_Edu_${version}_macOS13_x86_64.zip"
+    #url_mac_arm="https://downloads.coppeliarobotics.com/${version}/CoppeliaSim_Edu_${version}_macOS14_arm64.zip"
+    url_win_zip="https://downloads.coppeliarobotics.com/${version}/CoppeliaSim_Edu_${version}_Win.zip"
+    url_win_exe="https://downloads.coppeliarobotics.com/${version}/CoppeliaSim_Edu_${version}_Setup.exe"
+    url_win=(${url_win_zip} ${url_win_exe})
+    for url in ${url_win[@]}; do
+        wget --spider ${url}
+        if [ $? -eq 0 ]; then
+            url_exist=false
+            for old_url in "${old_link[@]}"
+            do
+                echo "Old: ${old_url}"
+                echo "New: ${url}"
+                if [ "${old_url}" == "${url}" ]; then
+                    echo "Already exists"
+                    url_exist=true
+                    break
+                fi
+            done
+
+            if [ "$url_exist" != true ]; then
+                echo "${url}" >> ./link/${tag}.txt
+                old_link+=(${url})
+            fi
+        fi
+    done
 
     echo "Downloading ${#old_link[@]} packages"
     for link in "${old_link[@]}"
