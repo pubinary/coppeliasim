@@ -26,12 +26,12 @@ for tag in $tags; do
         else
             old_link_nossl=($(grep -oP "http://\K[^']+" ./link/${tag}.txt))
             for link in "${old_link_nossl[@]}"; do
-                old_link+=("http://" + link)
+                old_link+=("http://${link}")
             done
 
             old_link_ssl=($(grep -oP "https://\K[^']+" ./link/${tag}.txt))
             for link in "${old_link_ssl[@]}"; do
-                old_link+=("https://" + link)
+                old_link+=("https://${link}")
             done            
 
             timestamp="[$(date --utc +%FT%T.%3NZ)]"
