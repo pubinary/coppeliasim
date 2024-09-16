@@ -62,18 +62,22 @@ for tag in $tags; do
         url="https://downloads.coppeliarobotics.com/${version}/CoppeliaSim_Edu_${version}_Ubuntu${ubuntu_year}_04.tar.xz"
         wget --spider ${url}
         if [ $? -eq 0 ]; then
+            url_exist=false
             for old_url in "${old_link[@]}"
             do
                 echo "Old: ${old_url}"
                 echo "New: ${url}"
                 if [ "${old_url}" == "${url}" ]; then
                     echo "Already exists"
-                    continue
-                else
-                    echo "${url}" >> ./link/${tag}.txt
-                    old_link+=(${url})
+                    url_exist=true
+                    break
                 fi
             done
+
+            if [ "$url_exist" != true ]; then
+                echo "${url}" >> ./link/${tag}.txt
+                old_link+=(${url})
+            fi
         fi
     done
 
