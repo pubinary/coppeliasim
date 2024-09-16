@@ -64,7 +64,8 @@ for tag in $tags; do
         if [ $? -eq 0 ]; then
             for old_url in "${old_link[@]}"
             do
-                echo ${old_url}
+                echo "Old: ${old_url}"
+                echo "New: ${url}"
                 if [ "${old_url}" == "${url}" ]; then
                     echo "Already exists"
                     break
