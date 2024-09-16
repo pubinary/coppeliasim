@@ -1,6 +1,8 @@
 name: Download historical versions
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "*/5 * * * *"
 
 jobs:
   collect:
