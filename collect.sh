@@ -19,7 +19,7 @@ for tag in $tags; do
 
         first_bracket="${timestamp_line:0:1}"
         last_bracket="${timestamp_line:(-1)}"
-        
+
         if [ "${first_bracket}" == "[" ] && [ "${last_bracket}" == "]" ]; then
             echo "Skipping ${tag}"
             continue
@@ -64,8 +64,9 @@ for tag in $tags; do
         if [ $? -eq 0 ]; then
             for old_url in "${old_link[@]}"
             do
-                if [ "$old_url" == "$url" ]; then
-                    echo "Already exist"
+                echo ${old_url}
+                if [ "${old_url}" == "${url}" ]; then
+                    echo "Already exists"
                     break
                 else
                     echo "${url}" >> ./link/${tag}.txt
@@ -86,12 +87,13 @@ for tag in $tags; do
     touch release_tag.txt
     echo "${tag}" > release_tag.txt
 
-    if [ ${#old_link[@]} -eq 0 ]; then
-        touch release_link.txt
+    touch release_link.txt
+
+    if [ ${#old_link[@]} -eq 0 ]; then        
         echo "Lost" > release_link.txt
         break
     else
-        echo "Found " + "${#old_link[@]}" + " links"
+        echo "Found " + "${#old_link[@]}" + " links" > release_link.txt
         break
     fi
 done
