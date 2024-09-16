@@ -68,20 +68,21 @@ for tag in $tags; do
                 echo "New: ${url}"
                 if [ "${old_url}" == "${url}" ]; then
                     echo "Already exists"
-                    break
+                    continue
                 else
                     echo "${url}" >> ./link/${tag}.txt
-                    old_link+=($url)
+                    old_link+=(${url})
                 fi
             done
         fi
     done
 
+    echo "Downloading ${#old_link[@]} packages"
     for link in "${old_link[@]}"
     do
-        wget --spider ${url}
+        wget --spider ${link}
         if [ $? -eq 0 ]; then
-            wget -P release ${url}
+            wget -P release ${link}
         fi
     done
              
