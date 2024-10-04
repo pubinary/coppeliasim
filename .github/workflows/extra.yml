@@ -1,7 +1,7 @@
-name: Download nightly
+name: Get more
 on:
-  schedule:
-    - cron: "0 0 * * *"
+  push:
+  workflow_dispatch:
 
 jobs:
   collect:
