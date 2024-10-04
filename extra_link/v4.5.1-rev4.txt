@@ -1,4 +1,0 @@
-https://downloads.coppeliarobotics.com/V4_5_1_rev4/CoppeliaSim_Edu_V4_5_1_rev4_macOS13_arm64.zip
-https://downloads.coppeliarobotics.com/V4_5_1_rev4/CoppeliaSim_Edu_V4_5_1_rev4_macOS12_x86_64.zip
-https://downloads.coppeliarobotics.com/V4_5_1_rev4/CoppeliaSim_Edu_V4_5_1_rev4_Win.zip
-https://downloads.coppeliarobotics.com/V4_5_1_rev4/CoppeliaSim_Edu_V4_5_1_rev4_Setup.exe
