@@ -2,7 +2,7 @@ name: Get more
 on:
   push:
     paths:
-    - './extra_link'
+      - 'extra_link/**'
   workflow_dispatch:
 
 jobs:
