@@ -37,7 +37,7 @@ jobs:
         # The arguments for the `git add` command (see the paragraph below for more info)
         # Default: '.'
         add: 'extra_link'
-        tag: ${{ steps.read_tag_name.outputs.contents }}
+        # tag: ${{ steps.read_tag_name.outputs.contents }}
 
     
     - name: Publish archives and packages
