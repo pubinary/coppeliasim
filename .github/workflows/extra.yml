@@ -1,6 +1,8 @@
 name: Get more
 on:
   push:
+    paths:
+    - extra_link
   workflow_dispatch:
 
 jobs:
@@ -18,26 +20,7 @@ jobs:
         sudo apt-get install -y wget
         mkdir -p link
         mkdir -p release
-        bash collect.sh
-
-#    - name: Update initialize flag
-#      uses: msanjose/github-secret-updater@v1
-#      env:
-#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#      with:
-#        owner: ${{ github.repository_owner }}
-#        repo: ${{ github.repository_name }}
-#        secret-id: 'INIT_TOKEN'
-#        secret-value: 'no'
-
-#    - name: Early exit
-#      run: |
-#        if [ ! -f release_tag.txt ]; then
-#          gh run cancel ${{ github.run_id }}
-#          gh run watch ${{ github.run_id }}
-#        fi
-#      env:
-#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        bash extra.sh
 
     - name: Read tag name
       id: read_tag_name
@@ -46,27 +29,16 @@ jobs:
         path: "release_tag.txt"
 
     - name: Echo tag name
-      run: echo "Creating release ${{ steps.read_tag_name.outputs.contents }}"
+      run: echo "Uploading more files for release ${{ steps.read_tag_name.outputs.contents }}"
 
     - name: Commit
       uses: EndBug/add-and-commit@v9 # You can change this to use a specific version.
       with:
         # The arguments for the `git add` command (see the paragraph below for more info)
         # Default: '.'
-        add: 'link'
+        add: 'extra_link'
         tag: ${{ steps.read_tag_name.outputs.contents }}
 
-    - name: Read link file
-      id: read_link_file
-      uses: andstor/file-reader-action@v1
-      with:
-        path: "link/${{ steps.read_tag_name.outputs.contents }}.txt"
-
-    - name: Echo link file
-      run: |
-        if [ ${{ steps.read_link_file.outputs.contents }} = "Lost" ]; then
-          echo "No package available for ${{ steps.read_tag_name.outputs.contents }}"
-        fi
     
     - name: Publish archives and packages
       uses: softprops/action-gh-release@v1
