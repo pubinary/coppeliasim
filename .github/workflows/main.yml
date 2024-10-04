@@ -2,6 +2,7 @@ name: Collect
 on:
   workflow_dispatch:
   schedule:
+    #Run at 12am every Sunday
     - cron: "0 0 * * 0"
 
 jobs:
