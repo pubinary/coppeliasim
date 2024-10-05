@@ -44,7 +44,7 @@ jobs:
       id: git_tag_check
       with:
       #  github_token: ${{ secrets.GITHUB_TOKEN }}
-        tag: '${{ steps.read_tag.outputs.contents }}'
+        tag: '${{steps.read_tag.outputs.contents}}'
 
     - name: Show existing tag
       if: steps.check_release.outputs.files_exists == 'true'
