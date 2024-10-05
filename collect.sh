@@ -119,6 +119,7 @@ for tag in $tags; do
              
     touch release_tag.txt
     echo "${tag}" > release_tag.txt
+    truncate -s -1 release_tag.txt
 
     touch release_link.txt
 

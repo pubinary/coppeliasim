@@ -19,6 +19,7 @@ for file in $files; do
         tag="${file%.*}"
         touch release_tag.txt
         echo "${tag}" > release_tag.txt
+        truncate -s -1 release_tag.txt
 
         #Empty the file
         true > ./extra_link/${file}
