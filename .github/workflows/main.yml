@@ -22,31 +22,32 @@ jobs:
         mkdir -p release
         bash collect.sh
 
-#    - name: Early exit
-#      run: |
-#        if [ ! -f release_tag.txt ]; then
-#          gh run cancel ${{ github.run_id }}
-#          gh run watch ${{ github.run_id }}
-#        fi
-#      env:
-#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Check file existence
+      id: check_release
+      uses: andstor/file-existence-action@v1
+      with:
+        files: "release_tag.txt"
 
     - name: Read tag
+      if: steps.check_release.outputs.files_exists == 'true'
       id: read_tag
       uses: andstor/file-reader-action@v1
       with:
         path: "release_tag.txt"
 
     - name: Show tag
+      if: steps.check_release.outputs.files_exists == 'true'
       run: echo "Creating release ${{ steps.read_tag.outputs.contents }}"
 
     - uses: mukunku/tag-exists-action@v1.6.0
+      if: steps.check_release.outputs.files_exists == 'true'
       id: git_tag_check
       with:
       #  github_token: ${{ secrets.GITHUB_TOKEN }}
         tag: '${{ steps.read_tag.outputs.contents }}'
 
     - name: Show existing tag
+      if: steps.check_release.outputs.files_exists == 'true'
       run: echo ${{ steps.git_tag_check.outputs.tag }}
 
     - name: Commit and tag
