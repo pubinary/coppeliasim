@@ -44,7 +44,7 @@ jobs:
       id: git_tag_check
       with:
       #  github_token: ${{ secrets.GITHUB_TOKEN }}
-        tag: 'v4.7.0-rev2'
+        tag: '${{ steps.read_tag.outputs.contents }}'
 
     - name: Show existing tag
       if: steps.git_tag_check.outputs.exists == 'true'
