@@ -51,7 +51,7 @@ jobs:
       run: echo "${{ steps.read_tag.outputs.contents }}"
 
     - name: Commit and tag
-      if: steps.git_tag_check.outputs.tag == '' 
+      if: steps.git_tag_check.outputs.exists == 'false' 
       uses: EndBug/add-and-commit@v9 # You can change this to use a specific version.
       with:
         # The arguments for the `git add` command (see the paragraph below for more info)
@@ -60,7 +60,7 @@ jobs:
         tag: ${{ steps.read_tag.outputs.contents }}
 
     - name: Commit but don't tag
-      if: steps.git_tag_check.outputs.tag != '' 
+      if: steps.git_tag_check.outputs.exists == 'true' 
       uses: EndBug/add-and-commit@v9 # You can change this to use a specific version.
       with:
         # The arguments for the `git add` command (see the paragraph below for more info)
