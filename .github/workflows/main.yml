@@ -68,12 +68,14 @@ jobs:
         add: 'link'
 
     - name: Read link file
+      if: steps.check_release.outputs.files_exists == 'true'
       id: read_link_file
       uses: andstor/file-reader-action@v1
       with:
         path: "release_link.txt"
 
     - name: Echo link file
+      if: steps.check_release.outputs.files_exists == 'true'
       run: |
         if [ ${{ steps.read_link_file.outputs.contents }} == "Lost" ]; then
           echo "No package available for ${{ steps.read_tag.outputs.contents }}"
