@@ -40,11 +40,11 @@ jobs:
     - name: Show tag
       run: echo "Creating release ${{ steps.read_tag.outputs.contents }}"
 
-    - uses: bbonkr/git-tag-check-action@v1
+    - uses: mukunku/tag-exists-action@v1.6.0
       id: git_tag_check
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        tag: ${{ steps.read_tag.outputs.contents }}
+      #  github_token: ${{ secrets.GITHUB_TOKEN }}
+        tag: '${{ steps.read_tag.outputs.contents }}'
 
     - name: Show existing tag
       run: echo ${{ steps.git_tag_check.outputs.tag }}
