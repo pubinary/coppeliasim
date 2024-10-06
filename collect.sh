@@ -94,12 +94,11 @@ for tag in $tags; do
 
         url_mac+=(${url_mac_amd} ${url_mac_arm})
     done
-    
-    echo "${url_mac[@]}"
-    
+
     url_win_zip="https://downloads.coppeliarobotics.com/${version}/CoppeliaSim_Edu_${version}_Win.zip"
     url_win_exe="https://downloads.coppeliarobotics.com/${version}/CoppeliaSim_Edu_${version}_Setup.exe"
-    url_win_mac=(${url_win_zip} ${url_win_exe} ${url_mac})
+    url_win=(${url_win_zip} ${url_win_exe})
+    url_win_mac=("${url_win[@]}" "${url_mac[@]}")
     for url in ${url_win_mac[@]}; do
         wget --spider ${url}
         if [ $? -eq 0 ]; then
