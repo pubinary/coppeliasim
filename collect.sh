@@ -95,6 +95,8 @@ for tag in $tags; do
         url_mac+=(${url_mac_amd} ${url_mac_arm})
     done
     
+    echo "${url_mac[@]}"
+    
     url_win_zip="https://downloads.coppeliarobotics.com/${version}/CoppeliaSim_Edu_${version}_Win.zip"
     url_win_exe="https://downloads.coppeliarobotics.com/${version}/CoppeliaSim_Edu_${version}_Setup.exe"
     url_win_mac=(${url_win_zip} ${url_win_exe} ${url_mac})
@@ -139,7 +141,7 @@ for tag in $tags; do
         echo "Lost" > release_link.txt
         break
     else
-        echo "Found " + "${#old_link[@]}" + " links" > release_link.txt
+        echo "Found ${#old_link[@]} links" > release_link.txt
         break
     fi
 done
