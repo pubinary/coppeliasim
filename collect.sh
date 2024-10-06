@@ -81,12 +81,24 @@ for tag in $tags; do
         fi
     done
     
-    #url_mac_amd="https://downloads.coppeliarobotics.com/${version}/CoppeliaSim_Edu_${version}_macOS13_x86_64.zip"
-    #url_mac_arm="https://downloads.coppeliarobotics.com/${version}/CoppeliaSim_Edu_${version}_macOS14_arm64.zip"
+    MAC_version_lines=$(cat MAC.latest)
+    MAC_current_version=${MAC_version_lines[0]}
+
+    url_mac=()
+
+    for i in {-3..1}; do
+        MAC_version=$((${MAC_current_version} + i))
+        echo "Processing MacOS ${MAC_version}"
+        url_mac_amd="https://downloads.coppeliarobotics.com/${version}/CoppeliaSim_Edu_${version}_macOS${MAC_version}_x86_64.zip"
+        url_mac_arm="https://downloads.coppeliarobotics.com/${version}/CoppeliaSim_Edu_${version}_macOS${MAC_version}_arm64.zip"
+
+        url_mac+=(${url_mac_amd} ${url_mac_arm})
+    done
+    
     url_win_zip="https://downloads.coppeliarobotics.com/${version}/CoppeliaSim_Edu_${version}_Win.zip"
     url_win_exe="https://downloads.coppeliarobotics.com/${version}/CoppeliaSim_Edu_${version}_Setup.exe"
-    url_win=(${url_win_zip} ${url_win_exe})
-    for url in ${url_win[@]}; do
+    url_win_mac=(${url_win_zip} ${url_win_exe} ${url_mac})
+    for url in ${url_win_mac[@]}; do
         wget --spider ${url}
         if [ $? -eq 0 ]; then
             url_exist=false
