@@ -86,7 +86,7 @@ for tag in $tags; do
 
     url_mac=()
 
-    for i in {-3..1}; do
+    for i in {-3..3}; do
         MAC_version=$((${MAC_current_version} + i))
         echo "Processing MacOS ${MAC_version}"
         url_mac_amd="https://downloads.coppeliarobotics.com/${version}/CoppeliaSim_Edu_${version}_macOS${MAC_version}_x86_64.zip"
