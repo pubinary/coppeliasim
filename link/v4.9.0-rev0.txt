@@ -1,0 +1,8 @@
+[2025-01-12T01:23:13.227Z]
+https://downloads.coppeliarobotics.com/V4_9_0_rev0/CoppeliaSim_Edu_V4_9_0_rev0_Ubuntu24_04.tar.xz
+https://downloads.coppeliarobotics.com/V4_9_0_rev0/CoppeliaSim_Edu_V4_9_0_rev0_Ubuntu22_04.tar.xz
+https://downloads.coppeliarobotics.com/V4_9_0_rev0/CoppeliaSim_Edu_V4_9_0_rev0_Ubuntu20_04.tar.xz
+https://downloads.coppeliarobotics.com/V4_9_0_rev0/CoppeliaSim_Edu_V4_9_0_rev0_Win.zip
+https://downloads.coppeliarobotics.com/V4_9_0_rev0/CoppeliaSim_Edu_V4_9_0_rev0_Setup.exe
+https://downloads.coppeliarobotics.com/V4_9_0_rev0/CoppeliaSim_Edu_V4_9_0_rev0_macOS13_x86_64.zip
+https://downloads.coppeliarobotics.com/V4_9_0_rev0/CoppeliaSim_Edu_V4_9_0_rev0_macOS14_arm64.zip
